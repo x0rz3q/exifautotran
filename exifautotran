@@ -36,7 +36,7 @@ EOF
     else
       rm "$i"
       mv tempfile "$i"
-      exiftool -Orientation=1 -n $i
+      exiftool -Orientation=1 -n "$i"
     fi
   fi
 done
