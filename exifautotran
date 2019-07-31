@@ -16,7 +16,7 @@ EOF
     exit 0;;
   esac
 
-  case `exiftool -t -s -s -s -n -IFD0:Orientation -IFD1:Orientation $i` in
+	case $(exiftool -t -s -s -s -n -IFD0:Orientation -IFD1:Orientation "$i") in
     1) transform="";;
     2) transform="-flip horizontal";;
     3) transform="-rotate 180";;
@@ -29,14 +29,14 @@ EOF
   esac
 
   if test -n "$transform"; then
-    echo Executing: jpegtran -copy all $transform $i >&2
+    echo Executing: jpegtran -copy all $transform "$i" >&2
     jpegtran -copy all $transform "$i" > tempfile
     if test $? -ne 0; then
-      echo Error while transforming $i - skipped. >&2
+      echo Error while transforming "$i" - skipped. >&2
     else
       rm "$i"
       mv tempfile "$i"
-      jpegexiforient -1 "$i" > /dev/null
+      exiftool -Orientation=1 -n $i
     fi
   fi
 done
